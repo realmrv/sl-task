@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +24,14 @@ Route::middleware('auth:sanctum')->get('/user', static function (Request $reques
 });
 
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(static function () {
+    Route::apiResources([
+        'comments' => CommentController::class,
+        'posts' => PostController::class,
+        'users' => UserController::class,
+    ]);
+});
 
 Route::any('{any?}', static function () {
     return response()->json([
